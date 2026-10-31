@@ -1,5 +1,10 @@
 # Histórico de versões
 
+## [1.1.1] — 2026-10-31
+### Alterado
+- Novo símbolo da marca: "A" em fita azul com anel dourado (sidebar, login, abertura animada, boas-vindas e favicon).
+- Abertura animada: o "A" surge e o anel dourado "passa" ao redor, com brilho.
+
 ## [1.1.0] — 2026-10-31
 ### Adicionado
 - Janela **Conta e administração** (engrenagem no rodapé do menu, modo servidor):

@@ -11,10 +11,16 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <linearGradient id="amL" x1="0" y1="0" x2="0.35" y2="1"><stop offset="0" stop-color="#4A98FF"/><stop offset=".55" stop-color="#1F68E6"/><stop offset="1" stop-color="#0B3FAE"/></linearGradient>
+  <linearGradient id="amR" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#2D7BF4"/><stop offset=".5" stop-color="#1557D0"/><stop offset="1" stop-color="#0A3796"/></linearGradient>
+  <linearGradient id="amF" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6FB0FF"/><stop offset="1" stop-color="#2463DA"/></linearGradient>
+  <linearGradient id="amG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F6A800"/><stop offset=".45" stop-color="#FFD43B"/><stop offset="1" stop-color="#FFC21A"/></linearGradient>
+</defs></svg>
 <div id="bootSplash" class="boot" role="status" aria-label="Carregando Autec">
   <div class="boot-lines" aria-hidden="true"></div>
   <div class="boot-inner">
-    <svg class="boot-mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-tile" width="32" height="32" rx="7" fill="#FFFFFF"/><path class="m-doc" pathLength="1" d="M10.5 6.5h8l5 5v13.2a.8.8 0 0 1-.8.8H10.5a.8.8 0 0 1-.8-.8V7.3a.8.8 0 0 1 .8-.8z" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path class="m-fold" pathLength="1" d="M18.5 6.5v5h5" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path class="m-check" pathLength="1" d="M12.8 18.6l2.6 2.6 4.8-5.2" fill="none" stroke="#D9982E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg class="boot-mark" viewBox="20 -95 860 860" aria-hidden="true"><g class="m-legs"><path d="M392 55 L486 55 L232 612 L104 612 Z" fill="url(#amL)"/><path d="M462 106 L478 55 L522 55 Q558 55 574 88 L846 612 L708 612 Z" fill="url(#amR)"/><path d="M478 55 L522 55 Q558 55 574 88 L552 98 Q540 76 512 76 L472 76 Z" fill="url(#amF)" opacity=".85"/></g><g class="m-ring"><g transform="translate(460 380) rotate(-19)"><path d="M-432 0 A432 168 0 0 0 432 0 A414 116 0 0 1 -432 0 Z" fill="url(#amG)" style="stroke:var(--mark-gap,#0F2442)" stroke-width="26" stroke-linejoin="round" paint-order="stroke"/></g></g></svg>
     <div class="boot-word" aria-hidden="true"><span style="--i:0">A</span><span style="--i:1">u</span><span style="--i:2">t</span><span style="--i:3">e</span><span style="--i:4">c</span></div>
     <div class="boot-tag">Gestão contratual</div>
     <div class="boot-track"><span></span></div>
@@ -24,7 +30,7 @@
 <div id="authScreen" class="auth-screen">
   <aside class="auth-aside"><div class="auth-glow" aria-hidden="true"></div>
     <div class="auth-aside-brand" style="--d:1">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#FFFFFF"/><path d="M10.5 6.5h8l5 5v13.2a.8.8 0 0 1-.8.8H10.5a.8.8 0 0 1-.8-.8V7.3a.8.8 0 0 1 .8-.8z" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M18.5 6.5v5h5" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M12.8 18.6l2.6 2.6 4.8-5.2" fill="none" stroke="#D9982E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg class="brand-mark" viewBox="20 -95 860 860" aria-hidden="true"><g class="m-legs"><path d="M392 55 L486 55 L232 612 L104 612 Z" fill="url(#amL)"/><path d="M462 106 L478 55 L522 55 Q558 55 574 88 L846 612 L708 612 Z" fill="url(#amR)"/><path d="M478 55 L522 55 Q558 55 574 88 L552 98 Q540 76 512 76 L472 76 Z" fill="url(#amF)" opacity=".85"/></g><g class="m-ring"><g transform="translate(460 380) rotate(-19)"><path d="M-432 0 A432 168 0 0 0 432 0 A414 116 0 0 1 -432 0 Z" fill="url(#amG)" style="stroke:var(--mark-gap,#0F2442)" stroke-width="26" stroke-linejoin="round" paint-order="stroke"/></g></g></svg>
       <div>
         <div class="auth-logo-text">Autec</div>
         <div class="auth-logo-tag">Gestão contratual</div>
@@ -45,7 +51,7 @@
   <main class="auth-main">
     <div class="auth-card" id="authCard">
       <div class="auth-logo">
-        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#FFFFFF"/><path d="M10.5 6.5h8l5 5v13.2a.8.8 0 0 1-.8.8H10.5a.8.8 0 0 1-.8-.8V7.3a.8.8 0 0 1 .8-.8z" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M18.5 6.5v5h5" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M12.8 18.6l2.6 2.6 4.8-5.2" fill="none" stroke="#D9982E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="brand-mark" viewBox="20 -95 860 860" aria-hidden="true"><g class="m-legs"><path d="M392 55 L486 55 L232 612 L104 612 Z" fill="url(#amL)"/><path d="M462 106 L478 55 L522 55 Q558 55 574 88 L846 612 L708 612 Z" fill="url(#amR)"/><path d="M478 55 L522 55 Q558 55 574 88 L552 98 Q540 76 512 76 L472 76 Z" fill="url(#amF)" opacity=".85"/></g><g class="m-ring"><g transform="translate(460 380) rotate(-19)"><path d="M-432 0 A432 168 0 0 0 432 0 A414 116 0 0 1 -432 0 Z" fill="url(#amG)" style="stroke:var(--mark-gap,#0F2442)" stroke-width="26" stroke-linejoin="round" paint-order="stroke"/></g></g></svg>
         <div>
           <div class="auth-logo-text">Autec</div>
           <div class="auth-logo-tag">Gestão contratual</div>
@@ -68,7 +74,7 @@
   <!-- ══ SIDEBAR ══ -->
   <aside class="sidebar">
     <div class="logo">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#FFFFFF"/><path d="M10.5 6.5h8l5 5v13.2a.8.8 0 0 1-.8.8H10.5a.8.8 0 0 1-.8-.8V7.3a.8.8 0 0 1 .8-.8z" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M18.5 6.5v5h5" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M12.8 18.6l2.6 2.6 4.8-5.2" fill="none" stroke="#D9982E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <svg class="brand-mark" viewBox="20 -95 860 860" aria-hidden="true"><g class="m-legs"><path d="M392 55 L486 55 L232 612 L104 612 Z" fill="url(#amL)"/><path d="M462 106 L478 55 L522 55 Q558 55 574 88 L846 612 L708 612 Z" fill="url(#amR)"/><path d="M478 55 L522 55 Q558 55 574 88 L552 98 Q540 76 512 76 L472 76 Z" fill="url(#amF)" opacity=".85"/></g><g class="m-ring"><g transform="translate(460 380) rotate(-19)"><path d="M-432 0 A432 168 0 0 0 432 0 A414 116 0 0 1 -432 0 Z" fill="url(#amG)" style="stroke:var(--mark-gap,#0F2442)" stroke-width="26" stroke-linejoin="round" paint-order="stroke"/></g></g></svg>
       <div>
         <div class="logo-name">Autec</div>
         <div class="logo-tag">Gestão contratual</div>
