@@ -1,0 +1,9 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "Autec: instalar", "type": "shell", "command": "npm run setup", "problemMatcher": [] },
+    { "label": "Autec: rodar (dev)", "type": "shell", "command": "npm run dev", "isBackground": true, "problemMatcher": [], "group": { "kind": "build", "isDefault": true } },
+    { "label": "Autec: testes", "type": "shell", "command": "npm test", "group": "test", "problemMatcher": [] },
+    { "label": "Autec: verificar tipos", "type": "shell", "command": "npm run typecheck", "problemMatcher": ["$tsc"] }
+  ]
+}

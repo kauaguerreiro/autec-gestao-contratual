@@ -1,0 +1,20 @@
+# Dependências e build
+node_modules/
+backend/dist/
+
+# Variáveis de ambiente (NUNCA versionar segredos)
+.env
+.env.*
+!.env.example
+
+# Banco de dados e arquivos enviados
+backend/data/
+*.db
+*.db-shm
+*.db-wal
+
+# Sistema / editores
+.DS_Store
+Thumbs.db
+*.log
+.idea/

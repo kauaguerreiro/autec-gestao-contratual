@@ -1,0 +1,15 @@
+{
+  "name": "autec",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Autec — plataforma de gestão contratual (front-end + back-end)",
+  "scripts": {
+    "setup": "npm install --prefix backend && node -e \"const f=require('fs');if(!f.existsSync('backend/.env'))f.copyFileSync('backend/.env.example','backend/.env')\"",
+    "dev": "npm run dev --prefix backend",
+    "build": "npm run build --prefix backend",
+    "start": "npm start --prefix backend",
+    "test": "npm test --prefix backend",
+    "typecheck": "npm run typecheck --prefix backend"
+  },
+  "engines": { "node": ">=20" }
+}

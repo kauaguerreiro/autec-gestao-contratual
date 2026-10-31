@@ -1,0 +1,23 @@
+# Implantação no Render (https://render.com) — Blueprint.
+# Cria um serviço web com disco persistente para o banco SQLite e os arquivos.
+services:
+  - type: web
+    name: autec
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    disk:
+      name: autec-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ALLOW_SIGNUP
+        value: "false"
+      - key: ORG_NAME
+        value: Autec
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ANTHROPIC_MODEL
+        value: claude-sonnet-4-6

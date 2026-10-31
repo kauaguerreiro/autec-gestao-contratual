@@ -1,0 +1,42 @@
+### Arquivo para a extensão REST Client do VS Code.
+### Clique em "Send Request" acima de cada bloco.
+@baseUrl = http://localhost:3000/api
+
+### Saúde da API
+GET {{baseUrl}}/health
+
+### Cadastro (o primeiro usuário vira administrador)
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{ "name": "Kauã Alves", "email": "kaua@empresa.com.br", "password": "Senha1234" }
+
+### Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{ "email": "kaua@empresa.com.br", "password": "Senha1234" }
+
+@token = {{login.response.body.token}}
+
+### Usuário logado
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+### Espaço de trabalho (pastas, contratos e alertas)
+GET {{baseUrl}}/workspace
+Authorization: Bearer {{token}}
+
+### Resumo para relatórios
+GET {{baseUrl}}/reports/summary
+Authorization: Bearer {{token}}
+
+### Usuários (somente admin)
+GET {{baseUrl}}/users
+Authorization: Bearer {{token}}
+
+### Trilha de auditoria (somente admin)
+GET {{baseUrl}}/audit?limit=50
+Authorization: Bearer {{token}}

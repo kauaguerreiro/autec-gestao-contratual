@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "humao.rest-client",
+    "qwtel.sqlite-viewer",
+    "ritwickdey.liveserver",
+    "streetsidesoftware.code-spell-checker-portuguese-brazilian",
+    "github.vscode-github-actions",
+    "eamodio.gitlens"
+  ]
+}

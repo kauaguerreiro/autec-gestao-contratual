@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.tabSize": 2,
+  "files.eol": "\n",
+  "files.exclude": { "**/node_modules": true, "backend/dist": true },
+  "search.exclude": { "**/node_modules": true, "backend/dist": true, "backend/data": true },
+  "typescript.tsdk": "backend/node_modules/typescript/lib",
+  "cSpell.language": "en,pt-BR",
+  "rest-client.environmentVariables": {
+    "local": { "baseUrl": "http://localhost:3000/api" }
+  }
+}

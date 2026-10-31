@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autec — Gestão de Contratos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+<div id="bootSplash" class="boot" role="status" aria-label="Carregando Autec">
+  <div class="boot-lines" aria-hidden="true"></div>
+  <div class="boot-inner">
+    <svg class="boot-mark" viewBox="0 0 32 32" aria-hidden="true"><rect class="m-tile" width="32" height="32" rx="7" fill="#FFFFFF"/><path class="m-doc" pathLength="1" d="M10.5 6.5h8l5 5v13.2a.8.8 0 0 1-.8.8H10.5a.8.8 0 0 1-.8-.8V7.3a.8.8 0 0 1 .8-.8z" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path class="m-fold" pathLength="1" d="M18.5 6.5v5h5" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path class="m-check" pathLength="1" d="M12.8 18.6l2.6 2.6 4.8-5.2" fill="none" stroke="#D9982E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="boot-word" aria-hidden="true"><span style="--i:0">A</span><span style="--i:1">u</span><span style="--i:2">t</span><span style="--i:3">e</span><span style="--i:4">c</span></div>
+    <div class="boot-tag">Gestão contratual</div>
+    <div class="boot-track"><span></span></div>
+  </div>
+</div>
+<!-- ══ AUTH SCREEN ══ -->
+<div id="authScreen" class="auth-screen">
+  <aside class="auth-aside"><div class="auth-glow" aria-hidden="true"></div>
+    <div class="auth-aside-brand" style="--d:1">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#FFFFFF"/><path d="M10.5 6.5h8l5 5v13.2a.8.8 0 0 1-.8.8H10.5a.8.8 0 0 1-.8-.8V7.3a.8.8 0 0 1 .8-.8z" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M18.5 6.5v5h5" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M12.8 18.6l2.6 2.6 4.8-5.2" fill="none" stroke="#D9982E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div>
+        <div class="auth-logo-text">Autec</div>
+        <div class="auth-logo-tag">Gestão contratual</div>
+      </div>
+    </div>
+    <div class="auth-aside-body">
+      <h1 class="auth-aside-title" style="--d:2">Controle completo da sua carteira de contratos.</h1>
+      <p class="auth-aside-text" style="--d:3">Centralize contratos, aditivos e distratos, acompanhe vigências e tenha informações prontas para auditoria e tomada de decisão.</p>
+      <ul class="auth-points">
+        <li style="--d:4"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Documentos vinculados ao contrato principal, organizados por espaço de trabalho</li>
+        <li style="--d:5"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Alertas de vencimento configuráveis por área ou cliente</li>
+        <li style="--d:6"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Relatórios consolidados e exportação em CSV</li>
+      </ul>
+    </div>
+    <div class="auth-aside-foot" style="--d:7"><span>© <span id="authYear"></span> Autec</span><span>Ambiente seguro</span></div>
+  </aside>
+
+  <main class="auth-main">
+    <div class="auth-card" id="authCard">
+      <div class="auth-logo">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#FFFFFF"/><path d="M10.5 6.5h8l5 5v13.2a.8.8 0 0 1-.8.8H10.5a.8.8 0 0 1-.8-.8V7.3a.8.8 0 0 1 .8-.8z" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M18.5 6.5v5h5" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M12.8 18.6l2.6 2.6 4.8-5.2" fill="none" stroke="#D9982E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <div class="auth-logo-text">Autec</div>
+          <div class="auth-logo-tag">Gestão contratual</div>
+        </div>
+      </div>
+      <h2 class="auth-heading" style="--d:2">Acesso à plataforma</h2>
+      <p class="auth-heading-sub" style="--d:3">Entre com suas credenciais corporativas.</p>
+      <div class="auth-tab-row" style="--d:4">
+        <div class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Entrar</div>
+        <div class="auth-tab" id="tabRegister" onclick="switchTab('register')">Criar conta</div>
+      </div>
+      <div id="authFormArea" style="--d:5"></div>
+    </div>
+  </main>
+</div>
+
+<div class="nav-scrim" onclick="closeNav()"></div>
+<div class="app" id="appRoot" style="display:none">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar">
+    <div class="logo">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#FFFFFF"/><path d="M10.5 6.5h8l5 5v13.2a.8.8 0 0 1-.8.8H10.5a.8.8 0 0 1-.8-.8V7.3a.8.8 0 0 1 .8-.8z" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M18.5 6.5v5h5" fill="none" stroke="#0F2442" stroke-width="1.9" stroke-linejoin="round"/><path d="M12.8 18.6l2.6 2.6 4.8-5.2" fill="none" stroke="#D9982E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div>
+        <div class="logo-name">Autec</div>
+        <div class="logo-tag">Gestão contratual</div>
+      </div>
+    </div>
+
+    <div class="sb-search">
+      <div class="sb-search-inner">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M11.5 11.5L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input type="text" id="searchInput" placeholder="Buscar contratos..." oninput="filterNav(this.value)">
+      </div>
+    </div>
+
+    <div class="sb-section">
+      <div class="sb-section-label">Principal</div>
+    </div>
+    <div style="padding:2px 6px">
+      <div class="nav-item" id="navDash" onclick="goHome()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="1" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="1" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/><rect x="9" y="9" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.3"/></svg>
+        <span class="nav-item-label">Visão geral</span>
+      </div>
+      <div class="nav-item" id="navFiles" onclick="goFiles()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1.5 4a1 1 0 011-1h3.3l1.5 1.5h6.2a1 1 0 011 1V12a1 1 0 01-1 1h-11a1 1 0 01-1-1V4z" stroke="currentColor" stroke-width="1.3"/></svg>
+        <span class="nav-item-label">Todos os arquivos</span>
+      </div>
+      <div class="nav-item" id="navVenc" onclick="goVencimentos()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v3.5l2 1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span class="nav-item-label">Vencimentos</span>
+        <span class="nav-badge" style="background:var(--ad);color:var(--amber)" id="expiringNavCount">2</span>
+      </div>
+      <div class="nav-item" id="navRel" onclick="goRelatorios()">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 3h10M3 6h7M3 9h9M3 12h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <span class="nav-item-label">Relatórios</span>
+      </div>
+    </div>
+
+    <div class="sb-section" style="margin-top:4px">
+      <div class="sb-section-label">Espaços de trabalho</div>
+    </div>
+    <div class="sb-tree" id="navTree"></div>
+
+    <div class="sb-footer">
+      <div class="sb-avatar">AM</div>
+      <div style="flex:1;min-width:0">
+        <div class="sb-user-name">Ana Medeiros</div>
+        <div class="sb-user-role">Gestão Jurídica</div>
+      </div>
+      <button class="sb-settings sb-account" onclick="openAccount()" title="Conta e administração">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M8 1.8v1.6M8 12.6v1.6M14.2 8h-1.6M3.4 8H1.8M12.4 3.6l-1.1 1.1M4.7 11.3l-1.1 1.1M12.4 12.4l-1.1-1.1M4.7 4.7L3.6 3.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </button>
+      <button class="sb-settings" style="margin-left:0" onclick="openAISettings()" title="Integração com IA">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l1.3 3.2 3.2 1.3-3.2 1.3L8 10.5 6.7 7.3 3.5 6l3.2-1.3L8 1.5zM12.5 10l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6.6-1.4z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="sb-settings" style="margin-left:0" onclick="logout()" title="Sair">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3h3a1 1 0 011 1v8a1 1 0 01-1 1h-3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M7 11l3-3-3-3M10 8H2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ══ -->
+  <div class="main">
+    <header class="topbar">
+      <button class="menu-btn" onclick="toggleNav()" aria-label="Abrir menu">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 5h12M3 9h12M3 13h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+      <div class="breadcrumb" id="breadcrumb"></div>
+      <div class="tb-actions">
+        <button class="tb-btn" onclick="triggerUpload()">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 2v9M4 6l4-4 4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Carregar
+        </button>
+        <button class="tb-btn tb-btn-primary" onclick="openNewFolderModal()">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 4a1 1 0 011-1h3l2 2h5a1 1 0 011 1v6a1 1 0 01-1 1H3a1 1 0 01-1-1V4z" stroke="currentColor" stroke-width="1.4"/><path d="M8 7v4M6 9h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          Nova pasta
+        </button>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="workspace" id="workspace">
+        <div id="workspaceContent"></div>
+      </div>
+
+      <!-- DETAIL DRAWER -->
+      <div class="drawer" id="drawer">
+        <div class="drawer-header">
+          <span class="drawer-title" id="drawerTitle">Detalhes</span>
+          <button class="drawer-close" onclick="closeDrawer()">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div style="flex:1;overflow-y:auto" id="drawerBody"></div>
+        <div class="drawer-footer" id="drawerFooter"></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /appRoot -->
+
+<!-- DRAG OVERLAY -->
+<div class="drag-overlay" id="dragOverlay">
+  <div class="drag-box">
+    <svg width="44" height="44" viewBox="0 0 48 48" fill="none">
+      <path d="M24 8v24M14 18l10-10 10 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8 38h32" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <div class="drag-title">Solte aqui</div>
+    <div class="drag-sub">Pastas e arquivos preservam hierarquia original</div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-dot" id="toastDot"></div>
+  <span id="toastMsg"></span>
+</div>
+
+<!-- UPLOAD PROGRESS -->
+<div class="up-progress" id="upProgress">
+  <div class="up-row"><span class="up-label" id="upLabel">Processando arquivos...</span><span class="up-pct" id="upPct"></span></div>
+  <div class="up-track"><div class="up-fill" id="upFill" style="width:0%"></div></div>
+  <div class="up-step" id="upStep"></div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/modules/data.js"></script>
+<script src="js/modules/core.js"></script>
+<script src="js/modules/dashboard.js"></script>
+<script src="js/modules/contracts.js"></script>
+<script src="js/modules/ai.js"></script>
+<script src="js/modules/documents.js"></script>
+<script src="js/modules/views.js"></script>
+<script src="js/modules/explorer.js"></script>
+<script src="js/modules/auth.js"></script>
+<script src="js/modules/admin.js"></script>
+<script src="js/modules/main.js"></script>
+</body>
+</html>
