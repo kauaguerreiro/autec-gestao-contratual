@@ -1,5 +1,12 @@
 # Histórico de versões
 
+## [1.2.2] — 2026-10-31
+### Alterado
+- A plataforma começa **vazia**: removidos os contratos e pastas de exemplo. Só aparece o que for inserido.
+- Dados de exemplo salvos por versões anteriores são apagados automaticamente; pastas e documentos
+  enviados pelo usuário são mantidos.
+- A tela inicial passa a ser sempre a Visão geral.
+
 ## [1.2.1] — 2026-10-31
 ### Adicionado
 - Visão geral: clicar na barra de situação ou na legenda (Ativos, Vencidos, Encerrados, Não lidos) destaca o grupo

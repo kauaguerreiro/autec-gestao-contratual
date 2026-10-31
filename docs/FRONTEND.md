@@ -11,7 +11,7 @@ Os arquivos são scripts clássicos carregados em ordem pelo `index.html`. Funç
 | `js/storage.js` | `LS`/`SS`: acesso seguro ao localStorage/sessionStorage |
 | `js/config.js` | `AUTEC_API_URL` — endereço do back-end |
 | `js/api.js` | Classe `AutecApi` (instância global `API`): detecção do servidor, login, salvar, arquivos, IA |
-| `modules/data.js` | Dados de exemplo (modo local), persistência e `applyWorkspace` |
+| `modules/data.js` | Dados (começam vazios), persistência, `applyWorkspace` e remoção dos exemplos antigos |
 | `modules/core.js` | Estado `S`, utilitários, cálculo de status (Ativo/Vencendo/Vencido/Encerrado), vínculos por CNPJ, árvore de pastas |
 | `modules/dashboard.js` | Tela **Visão geral** |
 | `modules/contracts.js` | Tabela de contratos, painel de detalhamento, arrastar e soltar, upload |
