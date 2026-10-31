@@ -15,18 +15,21 @@ export function buildRoutes({ services, repos }: Container): Router {
   const r = Router();
   const auth = authenticate(services.auth);
 
-  const authCtl = new AuthController(services.auth);
+  const authCtl = new AuthController(services.auth, services.oauth);
   const userCtl = new UserController(repos.users, services.auth, services.audit);
   const wsCtl = new WorkspaceController(services.workspace);
   const fileCtl = new FileController(services.files, services.audit);
   const aiCtl = new AiController(services.ai, services.audit);
   const repCtl = new ReportController(services.reports);
 
-  r.get('/health', (_req, res) => res.json({ ok: true, ai: services.ai.configured, signup: env.allowSignup, version: '1.0.0' }));
+  r.get('/health', (_req, res) =>
+    res.json({ ok: true, ai: services.ai.configured, signup: env.allowSignup, oauth: services.oauth.publicConfig, version: '1.2.0' }),
+  );
 
   // autenticação
   r.post('/auth/register', express.json(), h(authCtl.register));
   r.post('/auth/login', express.json(), h(authCtl.login));
+  r.post('/auth/oauth', express.json(), h(authCtl.oauthLogin));
   r.get('/auth/me', auth, h(authCtl.me));
   r.post('/auth/password', auth, express.json(), h(authCtl.changePassword));
 

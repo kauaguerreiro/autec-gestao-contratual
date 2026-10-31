@@ -12,6 +12,11 @@ export const loginSchema = z.object({
   password: z.string().min(1, 'Informe sua senha'),
 });
 
+export const oauthSchema = z.object({
+  provider: z.enum(['google', 'microsoft']),
+  idToken: z.string().min(20).max(8000),
+});
+
 export const changePasswordSchema = z.object({
   current: z.string().min(1),
   next: z.string().min(8, 'Mínimo de 8 caracteres'),

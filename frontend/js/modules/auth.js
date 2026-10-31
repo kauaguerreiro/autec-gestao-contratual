@@ -71,16 +71,10 @@ function renderAuthForm(){
       </div>
       <button class="auth-btn" id="li_btn" onclick="doLogin()">Entrar na plataforma</button>
       <div class="auth-divider"><div class="auth-divider-line"></div><span class="auth-divider-text">ou continue com</span><div class="auth-divider-line"></div></div>
-      <button class="auth-social" onclick="doSocialLogin('Google')">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-        Entrar com Google
-      </button>
-      <button class="auth-social" onclick="doSocialLogin('Microsoft')">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="1" y="1" width="10" height="10" fill="#F25022"/><rect x="13" y="1" width="10" height="10" fill="#7FBA00"/><rect x="1" y="13" width="10" height="10" fill="#00A4EF"/><rect x="13" y="13" width="10" height="10" fill="#FFB900"/></svg>
-        Entrar com Microsoft
-      </button>
+      <div class="social-area" id="socialArea"></div>
       <div class="auth-footer">Ainda não tem acesso? <button class="auth-link" onclick="switchTab('register')">Criar conta</button></div>
     `;
+    renderSocial();
   } else {
     el.innerHTML = `
       <div class="auth-field">
@@ -316,39 +310,107 @@ function doRegister(){
   },800);
 }
 
-// ── SOCIAL LOGIN (modo demonstração: sem servidor OAuth) ──
-function doSocialLogin(provider){
-  makeModal(`<div class="modal" style="max-width:400px">
-    <div class="modal-title">Entrar com ${provider}</div>
-    <div class="modal-sub" style="margin-bottom:14px">Modo demonstração: informe seus dados para simular o acesso via ${provider}. A integração real exige um servidor de autenticação (OAuth).</div>
-    <div class="modal-label">Nome</div>
-    <input class="modal-input" id="so_name" placeholder="Seu nome">
-    <div class="modal-label">E-mail da conta ${provider}</div>
-    <input class="modal-input" id="so_email" type="email" placeholder="voce@empresa.com" onkeydown="if(event.key==='Enter')doSocialConfirm('${provider}')">
-    <div class="modal-err" id="so_err"></div>
-    <div class="modal-actions">
-      <button class="btn-save" style="flex:1;padding:9px" onclick="doSocialConfirm('${provider}')">Continuar</button>
-      <button class="btn-ghost" style="padding:9px 16px" onclick="closeModal()">Cancelar</button>
+// ── LOGIN COM GOOGLE / MICROSOFT ──────────────────────────────
+// Usa as janelas oficiais de cada provedor (Google Identity Services e MSAL).
+// Modo servidor: o back-end valida o token e cria a sessão.
+// Modo local (GitHub Pages): o nome e o e-mail do token criam a conta neste navegador.
+const G_LOGO='<svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>';
+const MS_LOGO='<svg width="18" height="18" viewBox="0 0 21 21"><rect x="1" y="1" width="9" height="9" fill="#F25022"/><rect x="11" y="1" width="9" height="9" fill="#7FBA00"/><rect x="1" y="11" width="9" height="9" fill="#00A4EF"/><rect x="11" y="11" width="9" height="9" fill="#FFB900"/></svg>';
+
+function oauthCfg(){
+  const local=window.AUTEC_OAUTH||{};
+  const srv=API.online?(API.oauth||{}):{};
+  const google=srv.google||local.google||'';
+  const ms=(srv.microsoft&&srv.microsoft.clientId)?srv.microsoft:(local.microsoft&&local.microsoft.clientId?local.microsoft:null);
+  return {google,microsoft:ms};
+}
+function loadScriptOnce(src,check){
+  if(check()) return Promise.resolve();
+  return new Promise((res,rej)=>{
+    let el=document.querySelector(`script[src="${src}"]`);
+    if(!el){ el=document.createElement('script'); el.src=src; el.async=true; document.head.appendChild(el); }
+    el.addEventListener('load',()=>check()?res():rej(new Error('script')));
+    el.addEventListener('error',()=>rej(new Error('Não foi possível carregar o login do provedor. Verifique a internet.')));
+  });
+}
+function renderSocial(){
+  const area=document.getElementById('socialArea'); if(!area) return;
+  const cfg=oauthCfg();
+  area.innerHTML=`
+    <div class="social-g" id="gBtnHost">
+      <button class="auth-social" type="button" onclick="socialNotConfigured('Google')">${G_LOGO}<span>Continuar com o Google</span></button>
     </div>
-  </div>`);
-  setTimeout(()=>document.getElementById('so_name')?.focus(),50);
+    <button class="auth-social ms" type="button" onclick="${cfg.microsoft?'loginMicrosoft()':"socialNotConfigured('Microsoft')"}">${MS_LOGO}<span>Continuar com a Microsoft</span></button>`;
+  if(cfg.google) mountGoogleButton(cfg.google);
 }
-function doSocialConfirm(provider){
-  const name=(document.getElementById('so_name')?.value||'').trim();
-  const email=(document.getElementById('so_email')?.value||'').trim().toLowerCase();
-  const e=document.getElementById('so_err');
-  const fail=m=>{if(e){e.textContent=m;e.style.display='block';}};
-  if(!/\S+@\S+\.\S+/.test(email)) return fail('Informe um e-mail válido.');
-  const users=getUsers();
-  let user=users.find(u=>u.email===email);
-  if(!user){
-    if(name.length<2) return fail('Informe seu nome.');
-    const initials=name.split(' ').filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');
-    user={id:'u_'+Date.now(),name,email,role:'Usuário',initials,provider,hash:null,createdAt:new Date().toISOString()};
-    users.push(user); saveUsers(users);
+// Botão oficial do Google (mesmo visual de outros sites)
+function mountGoogleButton(clientId){
+  loadScriptOnce('https://accounts.google.com/gsi/client',()=>window.google&&google.accounts&&google.accounts.id).then(()=>{
+    const host=document.getElementById('gBtnHost'); if(!host) return;
+    google.accounts.id.initialize({client_id:clientId,callback:(r)=>finishOAuth('google',r.credential),ux_mode:'popup',auto_select:false,itp_support:true});
+    host.innerHTML='';
+    google.accounts.id.renderButton(host,{type:'standard',theme:'outline',size:'large',text:'continue_with',shape:'rectangular',logo_alignment:'center',width:Math.min(400,host.clientWidth||400),locale:'pt-BR'});
+  }).catch(()=>{ /* mantém o botão próprio, que explica o problema */ });
+}
+async function loginMicrosoft(){
+  const cfg=oauthCfg().microsoft; if(!cfg) return socialNotConfigured('Microsoft');
+  const btn=document.querySelector('.auth-social.ms'); if(btn){btn.disabled=true; btn.querySelector('span').textContent='Abrindo a Microsoft…';}
+  const reset=()=>{ if(btn){btn.disabled=false; btn.querySelector('span').textContent='Continuar com a Microsoft';} };
+  try{
+    await loadScriptOnce('https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.4/lib/msal-browser.min.js',()=>window.msal&&msal.PublicClientApplication);
+    const app=new msal.PublicClientApplication({
+      auth:{clientId:cfg.clientId,authority:'https://login.microsoftonline.com/'+(cfg.tenant||'common'),redirectUri:location.origin+location.pathname},
+      cache:{cacheLocation:'sessionStorage'}
+    });
+    const r=await app.loginPopup({scopes:['openid','profile','email'],prompt:'select_account'});
+    reset();
+    await finishOAuth('microsoft',r.idToken);
+  }catch(e){
+    reset();
+    if(e&&/user_cancelled|popup_window_error|cancel/i.test(String(e.errorCode||e.message))) return;
+    showToast('Não foi possível entrar com a Microsoft: '+(e.errorMessage||e.message||'erro'),'var(--red)');
   }
-  closeModal(); saveSession(user,true); enterApp(user);
 }
+function jwtClaims(t){
+  try{ const b=t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'); return JSON.parse(decodeURIComponent(escape(atob(b+'==='.slice((b.length+3)%4))))); }
+  catch(e){ return {}; }
+}
+async function finishOAuth(provider,idToken){
+  const label=provider==='google'?'Google':'Microsoft';
+  try{
+    let user;
+    if(API.online){
+      const u=await API.oauthLogin(provider,idToken);
+      user=await afterServerLogin(u,true);
+    } else {
+      const c=jwtClaims(idToken);
+      const email=String(c.email||c.preferred_username||'').toLowerCase();
+      if(!email) throw new Error('A conta não informou um e-mail.');
+      const name=c.name||email;
+      const users=getUsers();
+      user=users.find(u=>u.email===email);
+      if(!user){
+        const initials=name.split(' ').filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');
+        user={id:'u_'+Date.now(),name,email,role:'Usuário',initials,provider:label,hash:null,createdAt:new Date().toISOString()};
+        users.push(user); saveUsers(users);
+      }
+      saveSession(user,true);
+    }
+    const btn=document.getElementById('li_btn');
+    if(btn){btn.classList.add('success'); btn.innerHTML='<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Acesso liberado';}
+    setTimeout(()=>enterApp(user),motionOK()?420:0);
+  }catch(e){
+    showToast(`Não foi possível entrar com ${label}: ${e.message}`,'var(--red)');
+  }
+}
+function socialNotConfigured(label){
+  makeModal(`<div class="modal" style="max-width:440px">
+    <div class="modal-title">Entrar com ${label}</div>
+    <div class="modal-sub">O login com ${label} ainda não foi ativado neste ambiente. O administrador precisa cadastrar o Autec no ${label==='Google'?'Google Cloud':'Microsoft Entra'} e informar o <b>Client ID</b> nas configurações.<br><br>Passo a passo: <code>docs/LOGIN_SOCIAL.md</code>.</div>
+    <div class="modal-actions"><button class="btn-save" onclick="closeModal()">Entendi</button></div>
+  </div>`);
+}
+function doSocialLogin(p){ p==='Microsoft'?loginMicrosoft():socialNotConfigured('Google'); }
 
 // ── TERMOS / PRIVACIDADE ──
 function showLegal(kind){

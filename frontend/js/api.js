@@ -44,6 +44,7 @@
         this.online = !!(j && j.ok);
         this.ai = !!(j && j.ai);
         this.signup = j ? j.signup !== false : true;
+        this.oauth = (j && j.oauth) || {};
       } catch { this.online = false; }
       document.documentElement.classList.toggle('api-mode', this.online);
       return this.online;
@@ -72,6 +73,7 @@
     // ── autenticação ──
     async login(email, password) { const r = await this.request('POST', '/auth/login', { body: { email, password } }); this.token = r.token; return r.user; }
     async register(name, email, password) { const r = await this.request('POST', '/auth/register', { body: { name, email, password } }); this.token = r.token; return r.user; }
+    async oauthLogin(provider, idToken) { const r = await this.request('POST', '/auth/oauth', { body: { provider, idToken } }); this.token = r.token; return r.user; }
     async me() { return (await this.request('GET', '/auth/me')).user; }
     logout() { this.token = null; this.rev = 0; }
     onUnauthorized() { this.token = null; if (typeof logout === 'function' && document.getElementById('appRoot')?.style.display !== 'none') { logout(); showToast('Sua sessão expirou. Entre novamente.', 'var(--amber)'); } }

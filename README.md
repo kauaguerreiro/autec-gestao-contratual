@@ -9,7 +9,7 @@ Plataforma para organizar contratos, aditivos e distratos por **Unidade › Regi
 | **Front-end** | HTML, CSS e JavaScript puro (sem build), dividido em módulos — pasta [`frontend/`](frontend) |
 | **Back-end** | Node.js 22 + Express + TypeScript, arquitetura em camadas — pasta [`backend/`](backend) |
 | **Banco de dados** | SQLite (arquivo único, sem instalação). Pronto para migrar para PostgreSQL |
-| **Autenticação** | Senhas com bcrypt e sessão com token JWT |
+| **Autenticação** | E-mail e senha (bcrypt + JWT) ou **Google / Microsoft** (janelas oficiais) |
 | **IA** | Chamada pelo servidor; a chave da Anthropic **nunca** vai para o navegador |
 
 ---
@@ -95,6 +95,7 @@ No VS Code: **Terminal › Executar Tarefa…** lista as mesmas ações, e **F5*
 - [Referência da API](docs/API.md)
 - [Front-end: módulos e como evoluir](docs/FRONTEND.md)
 - [Publicação e hospedagem](docs/DEPLOY.md)
+- [Login com Google e Microsoft](docs/LOGIN_SOCIAL.md)
 - [Publicar e atualizar no GitHub (GitHub Desktop)](docs/GITHUB.md)
 - [Como contribuir (fluxo Git)](CONTRIBUTING.md)
 - [Próximos passos](docs/ROADMAP.md) · [Histórico de versões](CHANGELOG.md)

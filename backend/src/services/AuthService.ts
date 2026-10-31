@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import crypto from 'node:crypto';
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
 import type { AuthUser, User } from '../models/index.js';
@@ -48,6 +49,35 @@ export class AuthService {
     }
     this.users.touchLogin(user.id);
     this.audit.record(user.orgId, user.id, 'auth.login');
+    return { token: this.sign(user), user: strip(user) };
+  }
+
+  /**
+   * Login com Google/Microsoft. Se o e-mail já existe, entra nessa conta.
+   * Se não existe, cria a conta (respeitando ALLOW_SIGNUP) sem senha local.
+   */
+  async loginWithProvider(identity: { provider: string; email: string; name: string }): Promise<AuthResult> {
+    if (!identity.email) throw HttpError.badRequest('A conta não informou um e-mail');
+    let user = this.users.findByEmail(identity.email);
+    if (user && !user.active) throw HttpError.forbidden('Seu acesso está desativado. Fale com o administrador.');
+    if (!user) {
+      const isFirst = this.users.count() === 0;
+      if (!isFirst && !env.allowSignup) throw HttpError.forbidden('Seu e-mail ainda não tem acesso ao Autec. Peça ao administrador.');
+      const orgId = this.orgs.first()?.id ?? this.orgs.create(env.orgName);
+      user = this.users.create({
+        orgId,
+        name: identity.name || identity.email,
+        email: identity.email,
+        // senha aleatória e desconhecida: a conta só entra pelo provedor (ou após redefinição pelo admin)
+        passwordHash: await bcrypt.hash(crypto.randomUUID() + crypto.randomUUID(), 10),
+        role: isFirst ? 'admin' : 'user',
+        initials: initialsOf(identity.name || identity.email),
+        provider: identity.provider,
+      });
+      this.audit.record(orgId, user.id, 'auth.register', { email: user.email, provider: identity.provider });
+    }
+    this.users.touchLogin(user.id);
+    this.audit.record(user.orgId, user.id, 'auth.login', { provider: identity.provider });
     return { token: this.sign(user), user: strip(user) };
   }
 

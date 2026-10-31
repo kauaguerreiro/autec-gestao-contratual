@@ -24,7 +24,7 @@ Erros seguem sempre o formato:
 
 ### `GET /health` — pública
 ```json
-{ "ok": true, "ai": true, "signup": true, "version": "1.0.0" }
+{ "ok": true, "ai": true, "signup": true, "oauth": { "google": "…apps.googleusercontent.com", "microsoft": { "clientId": "…", "tenant": "common" } }, "version": "1.2.0" }
 ```
 
 ## Autenticação
@@ -42,6 +42,13 @@ O primeiro cadastro cria a organização e recebe perfil `admin`. Os demais rece
 ```json
 { "email": "kaua@empresa.com.br", "password": "Senha1234" }   →   { "token": "…", "user": { … } }
 ```
+
+### `POST /auth/oauth` — pública
+Login com Google ou Microsoft. O front-end envia o *ID token* recebido da janela oficial do provedor.
+```json
+{ "provider": "google", "idToken": "eyJhbGciOiJSUzI1NiIs…" }   →   { "token": "…", "user": { … } }
+```
+O servidor confere assinatura, emissor e público (`GOOGLE_CLIENT_ID` / `MICROSOFT_CLIENT_ID`). Sem configuração → **503**.
 
 ### `GET /auth/me`
 Retorna o usuário do token. Usado para restaurar a sessão.

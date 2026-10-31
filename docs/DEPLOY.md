@@ -45,6 +45,9 @@ Coloque um proxy com HTTPS na frente (Nginx, Caddy, IIS…).
 | `STORAGE_DIR` | ./data/files | Pasta dos arquivos dos contratos |
 | `MAX_UPLOAD_MB` | 25 | Tamanho máximo por arquivo |
 | `CORS_ORIGINS` | (vazio) | Domínios externos autorizados, separados por vírgula |
+| `GOOGLE_CLIENT_ID` | (vazio) | Login com Google — ver [LOGIN_SOCIAL.md](LOGIN_SOCIAL.md) |
+| `MICROSOFT_CLIENT_ID` | (vazio) | Login com Microsoft |
+| `MICROSOFT_TENANT` | common | `common`, `organizations` ou ID do locatário |
 | `ANTHROPIC_API_KEY` | (vazio) | Chave da Anthropic para a leitura por IA |
 | `ANTHROPIC_MODEL` | claude-sonnet-4-6 | Modelo usado |
 

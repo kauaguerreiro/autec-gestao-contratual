@@ -1,5 +1,12 @@
 # Histórico de versões
 
+## [1.2.0] — 2026-10-31
+### Adicionado
+- Login real com **Google** (botão oficial do Google Identity Services) e **Microsoft** (janela oficial via MSAL),
+  substituindo a simulação. Back-end valida o *ID token* (`POST /api/auth/oauth`) com as chaves públicas do provedor.
+- Variáveis `GOOGLE_CLIENT_ID`, `MICROSOFT_CLIENT_ID`, `MICROSOFT_TENANT`; migração `002_oauth.sql`.
+- Guia `docs/LOGIN_SOCIAL.md` e 3 novos testes da API.
+
 ## [1.1.1] — 2026-10-31
 ### Alterado
 - Novo símbolo da marca: "A" em fita azul com anel dourado (sidebar, login, abertura animada, boas-vindas e favicon).

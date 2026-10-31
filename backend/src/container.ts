@@ -9,6 +9,7 @@ import { AiService } from './services/AiService.js';
 import { AuditService } from './services/AuditService.js';
 import { AuthService } from './services/AuthService.js';
 import { FileStorageService } from './services/FileStorageService.js';
+import { OAuthService } from './services/OAuthService.js';
 import { ReportService } from './services/ReportService.js';
 import { WorkspaceService } from './services/WorkspaceService.js';
 
@@ -36,6 +37,7 @@ export function buildContainer(opts: { databaseFile?: string; storageDir?: strin
     auth: new AuthService(repos.users, repos.orgs, audit),
     workspace: new WorkspaceService(repos.workspace, repos.orgs, files, audit),
     ai: new AiService(),
+    oauth: new OAuthService(),
     reports: new ReportService(db),
   };
   return { database, repos, services };

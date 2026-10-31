@@ -11,6 +11,9 @@ import type { AddressInfo } from 'node:net';
 import { buildContainer } from '../src/container.js';
 import { createApp } from '../src/app.js';
 import { Database } from '../src/database/Database.js';
+import { env } from '../src/config/env.js';
+import { OAuthService } from '../src/services/OAuthService.js';
+import { SignJWT, createLocalJWKSet, exportJWK, generateKeyPair } from 'jose';
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'autec-test-'));
 let base = '';
@@ -31,8 +34,19 @@ async function api(method: string, url: string, body?: unknown, token?: string, 
   return { status: res.status, json, text };
 }
 
+let signGoogle: (claims: Record<string, unknown>, aud?: string) => Promise<string>;
+
 before(async () => {
-  const app = createApp(buildContainer({ databaseFile: path.join(tmp, 'test.db'), storageDir: path.join(tmp, 'files') }));
+  // chaves de teste no lugar das chaves públicas do Google
+  const { publicKey, privateKey } = await generateKeyPair('RS256');
+  const jwk = { ...(await exportJWK(publicKey)), kid: 'k1', alg: 'RS256' };
+  env.googleClientId = 'test-client.apps.googleusercontent.com';
+  signGoogle = (claims, aud = env.googleClientId) =>
+    new SignJWT(claims).setProtectedHeader({ alg: 'RS256', kid: 'k1' }).setIssuer('https://accounts.google.com')
+      .setAudience(aud).setIssuedAt().setExpirationTime('5m').sign(privateKey);
+  const container = buildContainer({ databaseFile: path.join(tmp, 'test.db'), storageDir: path.join(tmp, 'files') });
+  container.services.oauth = new OAuthService({ google: createLocalJWKSet({ keys: [jwk] }) });
+  const app = createApp(container);
   server = app.listen(0);
   await new Promise((r) => server.once('listening', r));
   base = `http://127.0.0.1:${(server.address() as AddressInfo).port}/api`;
@@ -155,5 +169,29 @@ describe('Autec API', () => {
     const r = await api('GET', '/reports/summary', undefined, admin);
     assert.equal(r.status, 200);
     assert.equal(typeof r.json.documents, 'number');
+  });
+
+  it('entra com Google (token válido) e cria a conta sem senha', async () => {
+    const health = await api('GET', '/health');
+    assert.equal(health.json.oauth.google, env.googleClientId);
+    const idToken = await signGoogle({ email: 'novo@renapsi.org.br', email_verified: true, name: 'Pessoa Nova' });
+    const r = await api('POST', '/auth/oauth', { provider: 'google', idToken });
+    assert.equal(r.status, 200);
+    assert.equal(r.json.user.email, 'novo@renapsi.org.br');
+    assert.equal(r.json.user.initials, 'PN');
+    // de novo: mesma conta
+    const again = await api('POST', '/auth/oauth', { provider: 'google', idToken });
+    assert.equal(again.json.user.id, r.json.user.id);
+  });
+
+  it('recusa token do Google emitido para outro aplicativo', async () => {
+    const idToken = await signGoogle({ email: 'x@y.com', email_verified: true, name: 'X' }, 'outro-app');
+    const r = await api('POST', '/auth/oauth', { provider: 'google', idToken });
+    assert.equal(r.status, 401);
+  });
+
+  it('informa quando a Microsoft não está configurada', async () => {
+    const r = await api('POST', '/auth/oauth', { provider: 'microsoft', idToken: 'x'.repeat(40) });
+    assert.equal(r.status, 503);
   });
 });

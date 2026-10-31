@@ -17,19 +17,21 @@ export function createApp(container: Container) {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
-          scriptSrc: ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com'],
+          scriptSrc: ["'self'", "'unsafe-inline'", 'https://cdnjs.cloudflare.com', 'https://accounts.google.com', 'https://cdn.jsdelivr.net'],
           scriptSrcAttr: ["'unsafe-inline'"],
-          styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+          styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://accounts.google.com'],
           fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
           imgSrc: ["'self'", 'data:', 'blob:'],
-          frameSrc: ["'self'", 'blob:'],
+          frameSrc: ["'self'", 'blob:', 'https://accounts.google.com', 'https://login.microsoftonline.com'],
           workerSrc: ["'self'", 'blob:', 'https://cdnjs.cloudflare.com'],
-          connectSrc: ["'self'", 'https://cdnjs.cloudflare.com'],
+          connectSrc: ["'self'", 'https://cdnjs.cloudflare.com', 'https://accounts.google.com', 'https://login.microsoftonline.com'],
           // em desenvolvimento (http://localhost) não força HTTPS
           upgradeInsecureRequests: env.isProd ? [] : null,
         },
       },
       crossOriginEmbedderPolicy: false,
+      // as janelas de login do Google/Microsoft precisam conversar com a página
+      crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' },
     }),
   );
   if (env.corsOrigins.length) app.use('/api', cors({ origin: env.corsOrigins }));

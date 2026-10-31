@@ -1069,7 +1069,6 @@ html,body{background:var(--page)}
 
 /* ══ MODO SERVIDOR ══ */
 /* login social e recuperação local não existem no modo servidor */
-.api-mode .auth-social,.api-mode .auth-divider{display:none}
 .no-signup #tabRegister,.no-signup .auth-footer{display:none}
 
 /* ══ CONTA E ADMINISTRAÇÃO ══ */
@@ -1154,3 +1153,11 @@ html,body{background:var(--page)}
 .boot.quick .boot-word span{animation-delay:calc(.35s + var(--i) * 50ms)!important;animation-duration:.45s!important}
 .boot.quick .boot-tag,.boot.quick .boot-track{animation-delay:.6s!important;animation-duration:.4s!important}
 .boot.quick .boot-track span{animation-delay:.7s!important;animation-duration:.55s!important}
+
+/* ══ LOGIN SOCIAL ══ */
+.social-area{display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
+.social-g{min-height:44px;display:flex;justify-content:center}
+.social-g>div{width:100%!important}
+.social-area .auth-social{height:44px;margin:0;font-weight:500;color:#1f1f1f;border-color:#dadce0;gap:12px}
+.social-area .auth-social:hover{background:#f8faff;border-color:#d2e3fc}
+.social-area .auth-social:disabled{opacity:.7;cursor:progress}

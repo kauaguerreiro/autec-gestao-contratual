@@ -35,10 +35,10 @@ export class UserRepository {
     return this.db.prepare('SELECT * FROM users WHERE org_id = ? ORDER BY name').all(orgId).map((r) => strip(map(r)));
   }
 
-  create(data: { orgId: number; name: string; email: string; passwordHash: string; role: Role; initials: string }): UserWithHash {
+  create(data: { orgId: number; name: string; email: string; passwordHash: string; role: Role; initials: string; provider?: string }): UserWithHash {
     const id = this.db
-      .prepare('INSERT INTO users (org_id, name, email, password_hash, role, initials) VALUES (?, ?, ?, ?, ?, ?)')
-      .run(data.orgId, data.name, data.email.toLowerCase(), data.passwordHash, data.role, data.initials).lastInsertRowid;
+      .prepare('INSERT INTO users (org_id, name, email, password_hash, role, initials, auth_provider) VALUES (?, ?, ?, ?, ?, ?, ?)')
+      .run(data.orgId, data.name, data.email.toLowerCase(), data.passwordHash, data.role, data.initials, data.provider ?? 'password').lastInsertRowid;
     return this.findById(Number(id))!;
   }
 

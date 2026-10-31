@@ -21,6 +21,13 @@ export const env = {
   storageDir: path.resolve(str('STORAGE_DIR', './data/files')),
   maxUploadMb: Number(str('MAX_UPLOAD_MB', '25')),
 
+  /** Login com Google: Client ID de um "OAuth client" do tipo Web (público, não é segredo). */
+  googleClientId: str('GOOGLE_CLIENT_ID'),
+  /** Login com Microsoft: Application (client) ID de um registro de app (SPA) no Microsoft Entra. */
+  microsoftClientId: str('MICROSOFT_CLIENT_ID'),
+  /** 'common' = contas corporativas e pessoais; 'organizations' = só corporativas; ou o ID do seu tenant. */
+  microsoftTenant: str('MICROSOFT_TENANT', 'common'),
+
   anthropicApiKey: str('ANTHROPIC_API_KEY'),
   anthropicModel: str('ANTHROPIC_MODEL', 'claude-sonnet-4-6'),
 
