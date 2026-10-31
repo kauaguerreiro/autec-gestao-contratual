@@ -84,6 +84,36 @@ function renderDashboard(el){
       <span class="db-recent-date">${relDate(f.updatedAt)}</span>
     </button>`;}).join('');
 
+  // ── detalhamento ao clicar na barra/legenda ──
+  const focus=S.dbFocus&&SEG.some(s=>s.g===S.dbFocus)?S.dbFocus:null;
+  let drillHtml='';
+  if(focus){
+    const seg=SEG.find(s=>s.g===focus);
+    const list=[...by(focus)].sort((a,b)=>focus==='vencido'?daysUntil(b.end)-daysUntil(a.end):focus==='ativo'?(daysUntil(a.end)??1e9)-(daysUntil(b.end)??1e9):a.f.name.localeCompare(b.f.name,'pt-BR'));
+    const info=r=>{
+      const d=daysUntil(r.end);
+      if(focus==='vencido') return `<span class="db-when late">${daysLabel(d)}</span>`;
+      if(focus==='ativo') return d===null?'<span class="db-row-sub">Sem término</span>':`<span class="db-when ${r.s==='expiring'?'soon':''}">${r.s==='expiring'?daysLabel(d):'Até '+fmtDate(r.end)}</span>`;
+      if(focus==='encerrado'){const t=terminationDoc(r.f); return `<span class="db-row-sub">${t&&t.id!==r.f.id?'Distrato '+(t.startDate&&t.startDate!=='—'?fmtDate(t.startDate):''):'Encerrado'}</span>`;}
+      return '<span class="db-row-sub">Aguardando leitura</span>';
+    };
+    const action={ativo:['Todos os arquivos','goFiles()'],vencido:['Abrir vencimentos','goVencimentos()'],encerrado:['Abrir vencimentos','goVencimentos()'],naolido:['Ler todos com IA',"readAllPending('all')"]}[focus];
+    drillHtml=`<section class="db-drill" style="--c:${seg.col}">
+      <header class="db-drill-head">
+        <span class="db-drill-dot"></span>
+        <div><h2>${seg.lbl} <b>${list.length}</b></h2><p>${sum(list)?brl(sum(list))+' por mês':''}${sum(list)&&list.length?' · ':''}${list.length?'clique em um contrato para ver o detalhamento':'nenhum contrato nesta situação'}</p></div>
+        <span class="ex-spacer"></span>
+        ${list.length?`<button class="db-link" onclick="${action[1]}">${action[0]}</button>`:''}
+        <button class="db-drill-x" onclick="dbFocus(null)" title="Fechar" aria-label="Fechar">${IC.close}</button>
+      </header>
+      <div class="db-drill-list">${list.slice(0,12).map((r,i)=>`<button class="db-row" style="--i:${i}" onclick="selectFile('${r.f.id}')">
+          <span class="db-dot" style="background:${seg.col}"></span>
+          <span class="db-row-main"><span class="db-row-name">${esc(r.f.name)}</span><span class="db-row-sub">${esc(r.unit.name)}${(r.f.parties||[])[1]&&r.f.parties[1]!=='—'?' · '+esc(r.f.parties[1]):''}</span></span>
+          <span class="db-row-side">${info(r)}<span class="db-row-sub">${r.v?brl(r.v)+'/mês':''}</span></span>
+        </button>`).join('')}${list.length>12?`<div class="db-empty">+ ${list.length-12} contrato${list.length-12>1?'s':''} — use o botão acima para ver todos.</div>`:''}</div>
+    </section>`;
+  }
+
   el.innerHTML=`
     <section class="db-hero">
       <div class="db-hero-text">
@@ -91,15 +121,15 @@ function renderDashboard(el){
         <p class="db-summary">${summary}</p>
         <p class="db-todo ${vencidos.length?'warn':''}">${todoTxt}</p>
       </div>
-      <div class="db-health" role="img" aria-label="Composição da carteira">
-        <div class="db-health-bar">${total?SEG.filter(s=>s.n).map(s=>`<span style="flex:${s.n};background:${s.col}" title="${s.lbl}: ${s.n}"></span>`).join(''):'<span style="flex:1;background:var(--s5)"></span>'}</div>
-        <div class="db-health-legend">${SEG.map(s=>`<button class="db-seg" onclick="${s.act}">
+      <div class="db-health ${focus?'has-focus':''}" aria-label="Composição da carteira">
+        <div class="db-health-bar">${total?SEG.filter(s=>s.n).map(s=>`<button class="db-bar-seg ${focus===s.g?'on':''}" style="flex:${s.n};--c:${s.col}" title="${s.lbl}: ${s.n} — clique para ver" onclick="dbFocus('${s.g}')" aria-label="${s.lbl}: ${s.n}"></button>`).join(''):'<span style="flex:1;background:var(--s5)"></span>'}</div>
+        <div class="db-health-legend">${SEG.map(s=>`<button class="db-seg ${focus===s.g?'on':''}" style="--c:${s.col}" aria-pressed="${focus===s.g}" onclick="dbFocus('${s.g}')">
           <span class="db-seg-top"><i style="background:${s.col}"></i>${s.lbl}</span>
           <span class="db-seg-n">${s.n}</span>
           <span class="db-seg-sub">${s.sub}</span></button>`).join('')}</div>
       </div>
     </section>
-
+    ${drillHtml}
     <div class="db-grid">
       <section class="db-panel">
         <header class="db-panel-head"><h2>Precisa de atenção</h2>${attn.length>7?`<button class="db-link" onclick="goVencimentos()">Ver todos (${attn.length})</button>`:attn.length?`<button class="db-link" onclick="goVencimentos()">Abrir vencimentos</button>`:''}</header>
@@ -115,6 +145,14 @@ function renderDashboard(el){
       <header class="db-panel-head"><h2>Atualizados recentemente</h2><button class="db-link" onclick="goFiles()">Todos os arquivos</button></header>
       <div class="db-list">${recentHtml||'<div class="db-empty">Carregue o primeiro contrato para começar.</div>'}</div>
     </section>`;
+}
+
+/** Clicar num grupo da barra/legenda abre (ou fecha) o detalhamento. */
+function dbFocus(g){
+  S.dbFocus=(g&&S.dbFocus!==g)?g:null;
+  const y=document.getElementById('workspace')?.scrollTop||0;
+  renderWorkspace();
+  const ws=document.getElementById('workspace'); if(ws) ws.scrollTop=y;
 }
 
 function sortControls(){

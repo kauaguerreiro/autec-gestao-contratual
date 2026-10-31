@@ -187,4 +187,5 @@ document.addEventListener('keydown',e=>{
   else if(document.body.classList.contains('nav-open')) closeNav();
   else if(document.getElementById('drawer')?.classList.contains('open')) closeDrawer();
   else if(S.sel&&S.sel.size) clearSel();
+  else if(S.dbFocus&&S.view==='dashboard') dbFocus(null);
 });

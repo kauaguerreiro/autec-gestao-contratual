@@ -1,5 +1,10 @@
 # Histórico de versões
 
+## [1.2.1] — 2026-10-31
+### Adicionado
+- Visão geral: clicar na barra de situação ou na legenda (Ativos, Vencidos, Encerrados, Não lidos) destaca o grupo
+  e abre um painel com os contratos daquela situação; clicar de novo, no X ou Esc fecha.
+
 ## [1.2.0] — 2026-10-31
 ### Adicionado
 - Login real com **Google** (botão oficial do Google Identity Services) e **Microsoft** (janela oficial via MSAL),
