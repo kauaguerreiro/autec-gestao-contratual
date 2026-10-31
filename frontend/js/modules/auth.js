@@ -553,14 +553,14 @@ function hideSplash(then,toLogin){
   const seen=SS.getItem('autec_boot');
   SS.setItem('autec_boot','1');
   if(seen) sp.classList.add('quick');
-  const hold=seen?650:2100;
+  const hold=seen?1350:2950;
   setTimeout(()=>{
     const aside=document.querySelector('.auth-aside');
     const w=toLogin&&aside&&getComputedStyle(aside).display!=='none'?aside.getBoundingClientRect().width:0;
     sp.classList.add('closing');
     if(w){
       sp.style.width=w+'px';            // vira o painel lateral
-      setTimeout(()=>{ then&&then(); sp.classList.add('out'); setTimeout(()=>sp.remove(),450); },650);
+      setTimeout(()=>{ then&&then(); sp.classList.add('out'); setTimeout(()=>sp.remove(),550); },800);
     } else {
       sp.classList.add('out'); then&&then(); setTimeout(()=>sp.remove(),600);
     }
