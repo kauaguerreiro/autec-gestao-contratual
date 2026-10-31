@@ -4,6 +4,7 @@
 ### Alterado
 - Novo símbolo da marca: "A" em fita azul com anel dourado (sidebar, login, abertura animada, boas-vindas e favicon).
 - Abertura animada: o "A" surge e o anel dourado "passa" ao redor, com brilho.
+- Interação no símbolo: ao passar o mouse, o "A" sobe e o anel faz uma órbita brilhando; clique leva à Visão geral; o anel brilha suavemente no login.
 
 ## [1.1.0] — 2026-10-31
 ### Adicionado

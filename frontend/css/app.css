@@ -1116,3 +1116,25 @@ html,body{background:var(--page)}
 .boot.quick .m-legs{animation-delay:0s!important;animation-duration:.35s!important}
 .boot.quick .m-ring{animation-delay:.1s!important;animation-duration:.35s!important}
 @media (prefers-reduced-motion:reduce){.boot-mark .m-ring{clip-path:none;animation:none}}
+
+/* ══ INTERAÇÃO DO SÍMBOLO (A azul + anel dourado) ══ */
+.logo{cursor:pointer;user-select:none}
+.brand-mark .m-legs,.brand-mark .m-ring{transform-box:view-box;transform-origin:50% 50%;transition:transform .45s cubic-bezier(.2,.8,.2,1.2),filter .45s}
+/* passar o mouse: o "A" sobe de leve e o anel gira em órbita, brilhando */
+.logo:hover .brand-mark .m-legs,.auth-aside-brand:hover .brand-mark .m-legs,.auth-logo:hover .brand-mark .m-legs{transform:translateY(-3%) scale(1.04)}
+.logo:hover .brand-mark .m-ring,.auth-aside-brand:hover .brand-mark .m-ring,.auth-logo:hover .brand-mark .m-ring{animation:ringOrbit 1.1s cubic-bezier(.45,0,.2,1) both;filter:drop-shadow(0 0 6px rgba(255,196,40,.85))}
+@keyframes ringOrbit{
+  0%{clip-path:inset(0 0 0 0);transform:rotate(0)}
+  25%{clip-path:inset(0 0 0 100%);transform:rotate(-6deg)}
+  26%{clip-path:inset(0 100% 0 0)}
+  100%{clip-path:inset(0 0 0 0);transform:rotate(0)}
+}
+/* clique: pulso rápido */
+.logo:active .brand-mark{transform:scale(.94);transition:transform .1s}
+.brand-mark{transition:transform .2s}
+/* ao entrar no sistema, o anel "passa" ao redor do A na barra lateral */
+.app-enter .logo .brand-mark .m-ring{animation:ringIn .7s .45s cubic-bezier(.6,0,.2,1) both;clip-path:inset(0 100% 0 0);filter:drop-shadow(0 0 6px rgba(255,196,40,.8))}
+/* respiração sutil do brilho do anel no painel do login */
+.auth-aside-brand .brand-mark .m-ring{animation:ringGlow 3.2s ease-in-out infinite}
+@keyframes ringGlow{0%,100%{filter:drop-shadow(0 0 0 rgba(255,196,40,0))}50%{filter:drop-shadow(0 0 7px rgba(255,196,40,.75))}}
+@media (prefers-reduced-motion:reduce){.brand-mark .m-legs,.brand-mark .m-ring{animation:none!important;transition:none}}
