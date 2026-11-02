@@ -99,6 +99,48 @@ function selectFile(id){
   openFileDrawer(f);
 }
 
+/**
+ * Histórico do contrato: contrato principal → aditivos → distrato, em ordem de data,
+ * com a evolução do valor mensal e da vigência (mesmo CNPJ das partes).
+ */
+function contractHistoryHtml(f){
+  const chain=[f,...relatedDocs(f)];
+  if(chain.length<2) return '';
+  const key=d=>(d.startDate&&d.startDate!=='—'?d.startDate:(d.updatedAt||'9999'));
+  const ord={Principal:0,Aditivo:1,Distrato:2};
+  chain.sort((a,b)=>key(a).localeCompare(key(b))||(ord[a.contractType]??3)-(ord[b.contractType]??3));
+  const vals=chain.map(d=>parseVal(d.value));
+  const firstV=vals.find(v=>v>0)||0, lastV=[...vals].reverse().find(v=>v>0)||0;
+  const pct=firstV&&lastV&&firstV!==lastV?((lastV/firstV-1)*100):null;
+  const ends=chain.map(d=>d.endDate).filter(d=>d&&d!=='—').sort();
+  const lastEnd=ends.length?ends[ends.length-1]:null;
+  const nAd=chain.filter(d=>d.contractType==='Aditivo').length, dist=chain.find(d=>d.contractType==='Distrato');
+  let prev=0;
+  const items=chain.map((d,i)=>{
+    const v=parseVal(d.value); let delta='';
+    if(v>0&&prev>0&&v!==prev){const p=(v/prev-1)*100; delta=`<span class="hx-delta ${p>0?'up':'down'}">${p>0?'▲':'▼'} ${Math.abs(p).toLocaleString('pt-BR',{maximumFractionDigits:1})}%</span>`;}
+    if(v>0) prev=v;
+    const cur=d.id===f.id;
+    return `<li class="hx-item ${cur?'cur':''} t-${(d.contractType||'').toLowerCase()}" style="--i:${i}" ${cur?'':`onclick="selectFile('${d.id}')"`}>
+      <span class="hx-dot"></span>
+      <div class="hx-body">
+        <div class="hx-top"><span class="hx-date">${d.startDate&&d.startDate!=='—'?fmtDate(d.startDate):'Sem data'}</span>${typeBadge(d.contractType)}${cur?'<span class="hx-cur">este documento</span>':''}</div>
+        <div class="hx-name" title="${esc(d.name)}">${esc(d.name)}</div>
+        <div class="hx-meta">${v>0?`<b>${esc(d.value)}</b>${delta}`:'<span>Sem alteração de valor</span>'}${d.endDate&&d.endDate!=='—'?`<span>· vigência até ${fmtDate(d.endDate)}</span>`:''}</div>
+      </div></li>`;
+  }).join('');
+  return `<div class="cd-section">
+    <div class="cd-section-title">Histórico do contrato</div>
+    <div class="hx-summary">
+      <div><span>Valor inicial</span><b>${firstV?brl(firstV):'—'}</b></div>
+      <div><span>Valor atual</span><b>${lastV?brl(lastV):'—'}</b>${pct!==null?`<em class="${pct>0?'up':'down'}">${pct>0?'+':''}${pct.toLocaleString('pt-BR',{maximumFractionDigits:1})}%</em>`:''}</div>
+      <div><span>${dist?'Encerrado em':'Vigência até'}</span><b>${dist?(dist.startDate&&dist.startDate!=='—'?fmtDate(dist.startDate):'distrato'):(lastEnd?fmtDate(lastEnd):'—')}</b></div>
+    </div>
+    <ol class="hx-list">${items}</ol>
+    <div class="rel-caption" style="margin-top:6px">${nAd} aditivo${nAd!==1?'s':''}${dist?' · 1 distrato':''} · documentos ligados pelo mesmo CNPJ</div>
+  </div>`;
+}
+
 function statusNote(f){
   const s=st(f), end=effEnd(f), d=daysUntil(end);
   const ext=end!=='—'&&end!==f.endDate?` <span style="color:var(--t3)">(prorrogado por aditivo)</span>`:'';
@@ -171,6 +213,7 @@ function openFileDrawer(f){
       <span class="cd-conf-pct">${confPct}%</span>
       ${f.hasBlob?`<button class="cd-conf-redo" title="Ler novamente com IA" onclick="confirmReprocess('${f.id}')">Reler</button>`:''}
     </div>`:'';
+  const historyHtml=contractHistoryHtml(f);
   const objHtml=f.object?`<div class="cd-section"><div class="cd-section-title">Objeto</div><div class="cd-object">${esc(f.object)}</div>${f.aiNotes?`<div class="cd-notes">${esc(f.aiNotes)}</div>`:''}</div>`:'';
 
   document.getElementById('drawerBody').innerHTML=`
@@ -203,7 +246,7 @@ function openFileDrawer(f){
           ${Array.from({length:11},(_,i)=>`<div class="pdf-mock-line" style="width:${55+Math.sin(i*1.9)*35}%"></div>`).join('')}
         </div>
         <div class="pdf-mock-type ${f.contractType==='Principal'?'badge-principal':f.contractType==='Aditivo'?'badge-aditivo':'badge-distrato'}" style="padding:3px 10px;font-size:10.5px;font-weight:600">${f.contractType}</div>
-        <div class="pdf-mock-label">Documento de exemplo · sem arquivo anexado</div>
+        <div class="pdf-mock-label">Arquivo original não disponível</div>
       </div>`}
 
       ${objHtml}
@@ -254,6 +297,7 @@ function openFileDrawer(f){
       </div>
 
       <!-- Vinculados -->
+      ${historyHtml}
       ${relatedHtml}
     </div>
   `;

@@ -21,6 +21,7 @@ Os arquivos são scripts clássicos carregados em ordem pelo `index.html`. Funç
 | `modules/explorer.js` | Explorador de pastas estilo OneDrive, mover/renomear/excluir |
 | `modules/auth.js` | Login, cadastro, sessão, abertura animada e boas-vindas |
 | `modules/admin.js` | Conta do usuário (troca de senha) e administração: usuários e auditoria |
+| `modules/palette.js` | Busca rápida (Ctrl+K): telas, ações, pastas e contratos |
 | `modules/main.js` | Inicialização: `API.detect().then(init)` |
 
 ## Regras de negócio importantes

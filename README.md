@@ -85,6 +85,7 @@ autec/
 | `npm test` | Roda os testes da API |
 | `npm run typecheck` | Verifica os tipos TypeScript |
 | `npm run build` / `npm start` | Gera e executa a versão de produção |
+| `npm run standalone` | Gera `dist/autec.html`, um arquivo único que abre offline (modo local) |
 
 No VS Code: **Terminal › Executar Tarefa…** lista as mesmas ações, e **F5** inicia o back-end em modo de depuração.
 

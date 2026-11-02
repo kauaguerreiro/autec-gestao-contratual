@@ -130,6 +130,7 @@ function renderDashboard(el){
       </div>
     </section>
     ${drillHtml}
+    ${onboardingHtml()}
     <div class="db-grid">
       <section class="db-panel">
         <header class="db-panel-head"><h2>Precisa de atenção</h2>${attn.length>7?`<button class="db-link" onclick="goVencimentos()">Ver todos (${attn.length})</button>`:attn.length?`<button class="db-link" onclick="goVencimentos()">Abrir vencimentos</button>`:''}</header>
@@ -145,6 +146,26 @@ function renderDashboard(el){
       <header class="db-panel-head"><h2>Atualizados recentemente</h2><button class="db-link" onclick="goFiles()">Todos os arquivos</button></header>
       <div class="db-list">${recentHtml||'<div class="db-empty">Carregue o primeiro contrato para começar.</div>'}</div>
     </section>`;
+}
+
+/** Primeiros passos: aparece enquanto ainda não há contratos na plataforma. */
+function onboardingHtml(){
+  if(allFilesList().length) return '';
+  const steps=[
+    {done:DATA.folders.length>0,t:'Crie seus espaços de trabalho',d:'Organize por Unidade › Região › Fornecedor, do jeito que já separa hoje.',b:'Criar pasta',a:"goFiles();setTimeout(openNewFolderModal,250)"},
+    {done:false,t:'Carregue os contratos',d:'Arraste PDFs, DOCs ou pastas inteiras — a hierarquia de pastas é mantida.',b:'Carregar contratos',a:"goFiles();setTimeout(triggerUpload,250)"},
+    {done:!!(getAICfg().key||API.ai),t:'Ative a leitura por IA',d:'A IA extrai valor mensal, vigência, pagamento, partes e CNPJ de cada contrato.',b:'Configurar IA',a:'openAISettings()'}
+  ];
+  const n=steps.filter(s=>s.done).length;
+  return `<section class="ob">
+    <div class="ob-head"><div><h2>Primeiros passos</h2><p>Comece a usar o Autec em 3 etapas · ${n} de 3 concluída${n!==1?'s':''}</p></div>
+      <div class="ob-progress"><span style="width:${n/3*100}%"></span></div></div>
+    <ol class="ob-steps">${steps.map((s,i)=>`<li class="${s.done?'done':''}" style="--i:${i}">
+      <span class="ob-num">${s.done?'<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-6.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>':i+1}</span>
+      <div class="ob-txt"><b>${s.t}</b><span>${s.d}</span></div>
+      ${s.done?'<span class="ob-ok">Concluído</span>':`<button class="ob-btn" onclick="${s.a}">${s.b}</button>`}
+    </li>`).join('')}</ol>
+  </section>`;
 }
 
 /** Clicar num grupo da barra/legenda abre (ou fecha) o detalhamento. */

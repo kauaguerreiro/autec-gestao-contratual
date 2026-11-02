@@ -1,5 +1,13 @@
 # Histórico de versões
 
+## [1.3.0] — 2026-10-31
+### Adicionado
+- **Histórico do contrato** no detalhamento: linha do tempo principal → aditivos → distrato (mesmo CNPJ),
+  com valor inicial, valor atual, variação % a cada aditivo e vigência.
+- **Primeiros passos** na Visão geral enquanto não há contratos (criar pasta, carregar, ativar IA).
+- **Busca rápida (Ctrl+K / ⌘K)**: telas, ações, pastas e contratos (por nome, parte, CNPJ ou objeto), navegável pelo teclado.
+- `npm run standalone`: gera um arquivo HTML único para uso offline.
+
 ## [1.2.2] — 2026-10-31
 ### Alterado
 - A plataforma começa **vazia**: removidos os contratos e pastas de exemplo. Só aparece o que for inserido.

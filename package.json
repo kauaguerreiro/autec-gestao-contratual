@@ -9,7 +9,10 @@
     "build": "npm run build --prefix backend",
     "start": "npm start --prefix backend",
     "test": "npm test --prefix backend",
-    "typecheck": "npm run typecheck --prefix backend"
+    "typecheck": "npm run typecheck --prefix backend",
+    "standalone": "node scripts/build-standalone.mjs"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }
